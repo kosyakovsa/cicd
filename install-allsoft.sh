@@ -76,6 +76,9 @@ fi
 #install postgresql
 read -p "Do you need to install Database server here (yes, other?): " INSTALLDB
 if [[ "$INSTALLDB" == "yes" ]]; then
+  sudo sh -c 'echo "deb http://apt.postgresql.org/pub/repos/apt $(lsb_release -cs)-pgdg main" > /etc/apt/sources.list.d/pgdg.list'
+  wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add -
+  sudo apt-get update
   sudo apt-get install postgresql-9.6 postgresql-contrib-9.6
 
 #$ sudo -u postgres psql
