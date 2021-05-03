@@ -1,3 +1,4 @@
+#!/bin/bash
 apt-get update && apt-get install build-essential wget -y
 
 
@@ -73,9 +74,9 @@ fi
 
 
 #install postgresql
-#read -p "Do you need to install Database server here (yes, other?): " INSTALLDB
-#if [[ "$INSTALLDB" == "yes" ]]; then
-#  sudo apt-get install postgresql postgresql-contrib
+read -p "Do you need to install Database server here (yes, other?): " INSTALLDB
+if [[ "$INSTALLDB" == "yes" ]]; then
+  sudo apt-get install postgresql-9.6 postgresql-contrib-9.6
 
 #$ sudo -u postgres psql
 
@@ -86,6 +87,6 @@ fi
 
 #https://evileg.com/en/post/2/
 
-#else
-#  echo "skiping install db depends on user choose"
-#fi
+else
+  echo "skiping install db depends on user choose"
+fi
