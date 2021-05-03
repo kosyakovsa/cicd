@@ -1,14 +1,26 @@
+echo ">>>>>>>>>>>>>>>> java >>>>>>>>>>>>>>>>"
+
+echo $1
+
+export JAVAVER="$1"
+
+if [ -z "$JAVAVER" ]; then
+	echo "java parameter is not defined. will use default 8 version"
+	export JAVAVER="8"
+fi
+
+
 groupadd tomcat
 useradd -s /bin/false -g tomcat -d /opt/tomcat tomcat
 cd /tmp
 
-read -p "Choose tomcat version (8.5.57 by default - ENTER): " TOMCATVER
+read -p "Choose tomcat version (8.5.65 by default - ENTER): " TOMCATVER
 if [ -z "$TOMCATVER" ]; then
-	export TOMCATVER="8.5.57"
+	export TOMCATVER="8.5.65"
 fi
 
 
-wget --no-check-certificate "http://apache.mirrors.ionfish.org/tomcat/tomcat-8/v$TOMCATVER/bin/apache-tomcat-$TOMCATVER.tar.gz" -O "apache-tomcat-$TOMCATVER.tar.gz"
+wget --no-check-certificate "https://apache-mirror.rbc.ru/pub/apache/tomcat/tomcat-8/v$TOMCATVER/bin/apache-tomcat-$TOMCATVER.tar.gz" -O "apache-tomcat-$TOMCATVER.tar.gz"
 
 mkdir /opt/tomcat
 sudo tar xzvf apache-tomcat-$TOMCATVER.tar.gz -C /opt/tomcat --strip-components=1
