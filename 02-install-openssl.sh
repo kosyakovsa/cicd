@@ -4,24 +4,28 @@ export OPENSSL_SHA256="de4d501267da39310905cb6dc8c6121f7a2cad45a7707f76df828fe1b
 
 echo "========================== start openssl ===================================="
 #read
-
+#sudo apt-get install gcc
+#sudo apt-get install make
+#sudo apt-get install make-guile
+#read
 # Build openssl no ask for version because troubles with compile
-cd /usr/local/src \
-  && wget --no-check-certificate "https://www.openssl.org/source/old/1.1.0/openssl-${OPENSSL_VERSION}.tar.gz" -O "openssl-${OPENSSL_VERSION}.tar.gz" \
-  && echo "$OPENSSL_SHA256" "openssl-${OPENSSL_VERSION}.tar.gz" | sha256sum -c - \
-  && tar -zxvf "openssl-${OPENSSL_VERSION}.tar.gz" \
-  && cd "openssl-${OPENSSL_VERSION}" \
-  && ./config shared --prefix=/usr/local/ssl --openssldir=/usr/local/ssl -Wl,-rpath,/usr/local/ssl/lib \
-  && make && make install \
-  && mv /usr/bin/openssl /root/ \
-  && ln -s /usr/local/ssl/bin/openssl /usr/bin/openssl \
-  && rm -rf "/usr/local/src/openssl-${OPENSSL_VERSION}.tar.gz" "/usr/local/src/openssl-${OPENSSL_VERSION}" 
+#cd /usr/local/src
+#wget --no-check-certificate "https://www.openssl.org/source/old/1.1.0/openssl-${OPENSSL_VERSION}.tar.gz" -O "openssl-${OPENSSL_VERSION}.tar.gz"
+#echo "$OPENSSL_SHA256" "openssl-${OPENSSL_VERSION}.tar.gz" | sha256sum -c -
+#tar -zxvf "openssl-${OPENSSL_VERSION}.tar.gz"
+#cd "openssl-${OPENSSL_VERSION}"
+#./config shared --prefix=/usr/local/ssl --openssldir=/usr/local/ssl -Wl,-rpath,/usr/local/ssl/lib
+#make
+#make install
+# mv /usr/bin/openssl /root/ \
+# ln -s /usr/local/ssl/bin/openssl /usr/bin/openssl \
+# rm -rf "/usr/local/src/openssl-${OPENSSL_VERSION}.tar.gz" "/usr/local/src/openssl-${OPENSSL_VERSION}" 
 
 echo "============================ update openssl paths ==============================="
 #read
 
 # Update path of shared libraries
-echo "/usr/local/ssl/lib" >> /etc/ld.so.conf.d/ssl.conf && ldconfig
+#echo "/usr/local/ssl/lib" >> /etc/ld.so.conf.d/ssl.conf && ldconfig
 
 echo "======================================== GOST ENGINE =================================="
 # Build GOST-engine for OpenSSL
@@ -37,7 +41,7 @@ apt-get update && apt-get install cmake unzip -y \
   && mkdir build \
   && cd build \
   && cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_C_FLAGS='-I/usr/local/ssl/include -L/usr/local/ssl/lib' \
-   -DOPENSSL_ROOT_DIR=/usr/local/ssl  -DOPENSSL_INCLUDE_DIR=/usr/local/ssl/include -DOPENSSL_LIBRARIES=/usr/local/ssl/lib .. \
+   -DOPENSSL_ROOT_DIR=/usr/bin -DOPENSSL_INCLUDE_DIR=/usr/local/ssl/include -DOPENSSL_LIBRARIES=/usr/local/ssl/lib .. \
   && cmake --build . --config Release \
   && cd ../bin \
   && cp gostsum gost12sum /usr/local/bin \
