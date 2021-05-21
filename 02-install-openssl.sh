@@ -1,32 +1,19 @@
-# Build openssl no ask for version because troubles with compile
-export OPENSSL_VERSION=1.1.0g
-export OPENSSL_SHA256="de4d501267da39310905cb6dc8c6121f7a2cad45a7707f76df828fe1b85073af"
+sudo apt-get install gcc
+sudo apt-get install make
+sudo apt-get install make-guile
+sudo apt-get install libssl-dev
 
-echo "========================== start openssl ===================================="
-#read
-
-# Build openssl no ask for version because troubles with compile
-cd /usr/local/src \
-  && wget --no-check-certificate "https://www.openssl.org/source/old/1.1.0/openssl-${OPENSSL_VERSION}.tar.gz" -O "openssl-${OPENSSL_VERSION}.tar.gz" \
-  && echo "$OPENSSL_SHA256" "openssl-${OPENSSL_VERSION}.tar.gz" | sha256sum -c - \
-  && tar -zxvf "openssl-${OPENSSL_VERSION}.tar.gz" \
-  && cd "openssl-${OPENSSL_VERSION}" \
-  && ./config shared --prefix=/usr/local/ssl --openssldir=/usr/local/ssl -Wl,-rpath,/usr/local/ssl/lib \
-  && make && make install \
-  && mv /usr/bin/openssl /root/ \
-  && ln -s /usr/local/ssl/bin/openssl /usr/bin/openssl \
-  && rm -rf "/usr/local/src/openssl-${OPENSSL_VERSION}.tar.gz" "/usr/local/src/openssl-${OPENSSL_VERSION}" 
-
-echo "============================ update openssl paths ==============================="
-#read
-
-# Update path of shared libraries
-echo "/usr/local/ssl/lib" >> /etc/ld.so.conf.d/ssl.conf && ldconfig
-
-echo "======================================== GOST ENGINE =================================="
+echo "========== GOST ENGINE =========="
+echo "it should be build on newer version of openssl"
 # Build GOST-engine for OpenSSL
 export GOST_ENGINE_VERSION=3bd506dcbb835c644bd15a58f0073ae41f76cb06
 export GOST_ENGINE_SHA256="4777b1dcb32f8d06abd5e04a9a2b5fe9877c018db0fc02f5f178f8a66b562025"
+
+sudo mkdir /usr/local/ssl
+sudo mkdir /usr/local/ssl/lib
+sudo mkdir /usr/local/ssl/include
+sudo mkdir /usr/local/ssl/lib/engines-1.1
+
 apt-get update && apt-get install cmake unzip -y \
   && cd /usr/local/src \
   && wget --no-check-certificate "https://github.com/gost-engine/engine/archive/${GOST_ENGINE_VERSION}.zip" -O gost-engine.zip \
@@ -37,7 +24,7 @@ apt-get update && apt-get install cmake unzip -y \
   && mkdir build \
   && cd build \
   && cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_C_FLAGS='-I/usr/local/ssl/include -L/usr/local/ssl/lib' \
-   -DOPENSSL_ROOT_DIR=/usr/local/ssl  -DOPENSSL_INCLUDE_DIR=/usr/local/ssl/include -DOPENSSL_LIBRARIES=/usr/local/ssl/lib .. \
+   -DOPENSSL_ROOT_DIR=/usr/bin -DOPENSSL_INCLUDE_DIR=/usr/local/ssl/include -DOPENSSL_LIBRARIES=/usr/local/ssl/lib .. \
   && cmake --build . --config Release \
   && cd ../bin \
   && cp gostsum gost12sum /usr/local/bin \
@@ -46,7 +33,30 @@ apt-get update && apt-get install cmake unzip -y \
   && rm -rf "/usr/local/src/gost-engine.zip" "/usr/local/src/engine-${GOST_ENGINE_VERSION}" 
 
 
-echo "=================================== enabling GOST ENGINE (ssl conf) ========================"
+
+# Build openssl no ask for version because troubles with compile
+export OPENSSL_VERSION=1.1.0g
+export OPENSSL_SHA256="de4d501267da39310905cb6dc8c6121f7a2cad45a7707f76df828fe1b85073af"
+
+echo "====== OPENSSL 1.1.0G  ==========="
+# Build openssl no ask for version because troubles with compile
+cd /usr/local/src
+wget --no-check-certificate "https://www.openssl.org/source/old/1.1.0/openssl-${OPENSSL_VERSION}.tar.gz" -O "openssl-${OPENSSL_VERSION}.tar.gz"
+echo "$OPENSSL_SHA256" "openssl-${OPENSSL_VERSION}.tar.gz" | sha256sum -c -
+tar -zxvf "openssl-${OPENSSL_VERSION}.tar.gz"
+cd "openssl-${OPENSSL_VERSION}"
+./config shared --prefix=/usr/local/ssl --openssldir=/usr/local/ssl -Wl,-rpath,/usr/local/ssl/lib
+make
+make install
+# mv /usr/bin/openssl /root/ \
+# ln -s /usr/local/ssl/bin/openssl /usr/bin/openssl \
+rm -rf "/usr/local/src/openssl-${OPENSSL_VERSION}.tar.gz" "/usr/local/src/openssl-${OPENSSL_VERSION}" 
+
+#echo "======== update openssl paths ========="
+# Update path of shared libraries
+#echo "/usr/local/ssl/lib" >> /etc/ld.so.conf.d/ssl.conf && ldconfig
+
+echo "====== enabling GOST ENGINE (ssl conf) ========"
 # Enable engine
 sed -i '6i openssl_conf=openssl_def' /usr/local/ssl/openssl.cnf \
   && echo "" >> /usr/local/ssl/openssl.cnf \
