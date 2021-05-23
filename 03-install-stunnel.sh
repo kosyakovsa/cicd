@@ -1,4 +1,4 @@
-cd /work/cicd
+#cd /work/cicd
   echo "=========================== stunnel (secured connector) =========================================="
   read -p "Enter stunnel version (5.56 default - ENTER): " STUNVER
   if [ -z "$STUNVER" ]; then

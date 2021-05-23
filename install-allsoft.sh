@@ -1,13 +1,14 @@
 #!/bin/bash
-mkdir /work/cicd
-cd /work/cicd
+#mkdir /work
+#mkdir /work/cicd
+#cd /work/cicd
 apt-get update && apt-get install build-essential wget -y
 
 
 apt-get install -y mc
 apt-get install -y wget
 
-cd /work/cicd
+#cd /work/cicd
 
 #Network storage installing on demand
 read -p "install network mount packages? (Is your file store located on other server?) (yes, other) " INSTALLCIFS
@@ -17,7 +18,7 @@ else
     echo "skiping cifs depends on user choose"
 fi
 
-cd /work/cicd
+#cd /work/cicd
 
 #OPENSSL installing always because this generates hashes by GOST for documents
 read -p "install openssl packages? (Would it will web server or secured tunnel) (yes, other) " INSTALLOPENSSL
@@ -27,7 +28,7 @@ else
     echo "skiping openssl depends on user choose"
 fi
 
-cd /work/cicd
+#cd /work/cicd
 
 #stunnel - is tool for allow gost ssl connection (nbki)
 if [[ "$INSTALLOPENSSL" == "yes" ]]; then
@@ -40,7 +41,7 @@ if [[ "$INSTALLOPENSSL" == "yes" ]]; then
 else
 	echo "skiping stunnel because no openssl";
 fi
-cd /work/cicd
+#cd /work/cicd
 
 
 #install java
@@ -53,7 +54,7 @@ else
 fi
 
 
-cd /work/cicd
+#cd /work/cicd
 
 #install tomcat - container web applications
 if [[ "$INSTALLJAVA" == "yes" ]]; then
@@ -80,7 +81,7 @@ fi
 # ant install for dispatcher
 # ant build dispatcher...
 
-cd /work/cicd
+#cd /work/cicd
 
 #install postgresql
 read -p "Do you need to install Database server here (yes, other?): " INSTALLDB
