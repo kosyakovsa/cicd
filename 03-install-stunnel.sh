@@ -1,8 +1,8 @@
 #cd /work/cicd
   echo "=========================== stunnel (secured connector) =========================================="
-  read -p "Enter stunnel version (5.56 default - ENTER): " STUNVER
+  read -p "Enter stunnel version (5.59 default - ENTER): " STUNVER
   if [ -z "$STUNVER" ]; then
-	export STUNVER="5.56"
+	export STUNVER="5.59"
   fi
   
   # Rebuild stunnel

@@ -17,9 +17,9 @@ groupadd tomcat
 useradd -s /bin/false -g tomcat -d /opt/tomcat tomcat
 cd /tmp
 
-read -p "Choose tomcat version (8.5.65 by default - ENTER): " TOMCATVER
+read -p "Choose tomcat version (8.5.66 by default - ENTER): " TOMCATVER
 if [ -z "$TOMCATVER" ]; then
-	export TOMCATVER="8.5.65"
+	export TOMCATVER="8.5.66"
 fi
 
 
