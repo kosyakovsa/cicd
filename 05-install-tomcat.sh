@@ -1,4 +1,6 @@
+#!/bin/bash
 #cd /work/cicd
+
 echo ">>>>>>>>>>>>>>>> java >>>>>>>>>>>>>>>>"
 
 echo $1
