@@ -85,7 +85,7 @@ cd /work/cicd
 #install postgresql
 read -p "Do you need to install Database server here (yes, other?): " INSTALLDB
 if [[ "$INSTALLDB" == "yes" ]]; then
-    sudo ./06-install-pg.sh
+    sudo ./06-installpg.sh
 else
   echo "skiping install db depends on user choose"
 fi
