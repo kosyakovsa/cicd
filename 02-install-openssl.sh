@@ -1,3 +1,4 @@
+cd /work/cicd
 sudo apt-get install gcc
 sudo apt-get install make
 sudo apt-get install make-guile

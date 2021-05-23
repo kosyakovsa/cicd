@@ -1,9 +1,13 @@
 #!/bin/bash
+mkdir /work/cicd
+cd /work/cicd
 apt-get update && apt-get install build-essential wget -y
 
 
 apt-get install -y mc
 apt-get install -y wget
+
+cd /work/cicd
 
 #Network storage installing on demand
 read -p "install network mount packages? (Is your file store located on other server?) (yes, other) " INSTALLCIFS
@@ -13,6 +17,7 @@ else
     echo "skiping cifs depends on user choose"
 fi
 
+cd /work/cicd
 
 #OPENSSL installing always because this generates hashes by GOST for documents
 read -p "install openssl packages? (Would it will web server or secured tunnel) (yes, other) " INSTALLOPENSSL
@@ -22,6 +27,7 @@ else
     echo "skiping openssl depends on user choose"
 fi
 
+cd /work/cicd
 
 #stunnel - is tool for allow gost ssl connection (nbki)
 if [[ "$INSTALLOPENSSL" == "yes" ]]; then
@@ -34,6 +40,7 @@ if [[ "$INSTALLOPENSSL" == "yes" ]]; then
 else
 	echo "skiping stunnel because no openssl";
 fi
+cd /work/cicd
 
 
 #install java
@@ -46,6 +53,7 @@ else
 fi
 
 
+cd /work/cicd
 
 #install tomcat - container web applications
 if [[ "$INSTALLJAVA" == "yes" ]]; then
@@ -72,24 +80,12 @@ fi
 # ant install for dispatcher
 # ant build dispatcher...
 
+cd /work/cicd
 
 #install postgresql
 read -p "Do you need to install Database server here (yes, other?): " INSTALLDB
 if [[ "$INSTALLDB" == "yes" ]]; then
-  sudo sh -c 'echo "deb http://apt.postgresql.org/pub/repos/apt $(lsb_release -cs)-pgdg main" > /etc/apt/sources.list.d/pgdg.list'
-  wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add -
-  sudo apt-get update
-  sudo apt-get install postgresql-9.6 postgresql-contrib-9.6
-
-#$ sudo -u postgres psql
-
-  #psql ALTER USER postgres PASSWORD 'myPassword';
-  #psql create db
-  #download sql-s
-  #psql sql-s
-
-#https://evileg.com/en/post/2/
-
+    sudo ./06-install-pg.sh
 else
   echo "skiping install db depends on user choose"
 fi
