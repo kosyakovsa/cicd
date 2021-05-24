@@ -21,14 +21,23 @@ echo "UPDATE settings.sys_settings set syssetvalue = trim('http://${OUTPUT}') WH
 #echo >> $PWD/basesettings.sql
 
 wget --no-check-certificate http://demo.premierb.ru/sign/defaultdb.backup
+echo "SET DEFAULT PASSWORD FOR USER POSTGRES"
 
 sudo -u postgres psql -c "ALTER USER postgres WITH PASSWORD 'K33u2%t';"
+echo "Enter the password for posgres user of DB for init SQL"
 
 sudo -u postgres psql -h localhost -U postgres -p 5432 -a -f $PWD/pginit.sql
+echo "Enter the password for posgres user of DB for restore db from file"
+
 /usr/bin/pg_restore $PWD/defaultdb.backup -d bg -U postgres -h localhost -p 5432
 
+echo "Enter the password for posgres user of DB for init some environment settings"
 
 psql -h localhost -U postgres -p 5432 -a -f $PWD/basesettings.sql
+rm $PWD/basesettings.sql
+rm $PWD/defaultdb.backup
+
+
 
 
 
