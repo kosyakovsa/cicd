@@ -90,3 +90,12 @@ if [[ "$INSTALLDB" == "yes" ]]; then
 else
   echo "skiping install db depends on user choose"
 fi
+
+
+echo
+
+
+echo "${tput setaf 1}MODIFY tomcat settings and then run build & deploy scripts"
+tput setaf 7
+echo "PRESS ENTER FOR FINISH................ "
+read
