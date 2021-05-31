@@ -15,7 +15,9 @@ rm $PWD/defaultdb.backup
 
 #read -p "what address(site or ip) of sprint (settings)" SITEADDRESS
 touch $PWD/basesettings.sql
-echo "UPDATE settings.sys_settings set syssetvalue = trim('http://${OUTPUT}') WHERE syssetname like 'mainUrl%'" >> $PWD/basesettings.sql
+echo "UPDATE settings.sys_settings set syssetvalue = trim('http://${OUTPUT}') WHERE syssetname like 'mainUrl%';" >> $PWD/basesettings.sql
+echo "INSERT INTO settings.sys_settings (syssetname, syssetvalue) VALUES('signUrlBank', 'banksign');" >> $PWD/basesettings.sql
+echo "INSERT INTO users_product (user_id, product_id) values(1, 1);"
 #echo "${OUTPUT}" >> $PWD/basesettings.sql
 #echo /b >> $PWD/basesettings.sql
 #echo >> $PWD/basesettings.sql

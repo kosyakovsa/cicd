@@ -92,10 +92,9 @@ else
 fi
 
 
-echo
+echo ""
 
 
-echo "${tput setaf 1}MODIFY tomcat settings and then run build & deploy scripts"
-tput setaf 7
+echo "MODIFY tomcat settings and then run build & deploy scripts"
 echo "PRESS ENTER FOR FINISH................ "
 read
